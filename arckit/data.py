@@ -115,7 +115,14 @@ class Task:
 
     def gpt_prompt(self, i_test, mode="chatgpt", include_completion=False, rot90=False, transpose=False, spaces=True):
         if mode == "chatgpt":
-            prompt = "We are playing a game which involves transforming an input grid of digits into an output grid of digits. In general, digits form objects in 2D and the task is to perform some spatial transformation of these objects to go from the input grid to the output grid. All the information about the transformation is contained within the input pairs themselves, and your answer will only be correct if the output grid is exactly correct, so this is what I expect from you. I will begin by giving you several examples of input-output pairs. You will then be given a new input grid, and you must provide the corresponding output grid.\n"
+            prompt = (
+                    "We are playing a game which involves transforming an input grid of digits into an output grid of digits. "
+                    "In general, digits form objects in 2D and the task is to perform some spatial transformation of these objects "
+                    "to go from the input grid to the output grid. All the information about the transformation is contained "
+                    "within the input pairs themselves, and your answer will only be correct if the output grid is exactly correct, "
+                    "so this is what I expect from you. I will begin by giving you several examples of input-output pairs. "
+                    "You will then be given a new input grid, and you must provide the corresponding output grid.\n"
+                )
         elif mode == "gpt3":
             # prompt = "We are playing a game which involves transforming an input grid of digits into an output grid of digits. Every below pair of grids contains the same transformation. In general, digits form objects in 2D and the task is to perform some spatial transformation of these objects to go from the input tile to the output tile. One such example of tiles is below.\n"
             prompt = "We are playing a game which involves transformaing a 2D input grid of digits into an output grid of digits. Every below pair of grids contains the same transformation (e.g. rotation, symmetry, manipulation of objects). Each Input grid is followed by an Output grid which applies the same transformation as previous Input/Output pairs. One such example is below.\n"
@@ -149,7 +156,12 @@ Output {i}:
         if mode == "gpt3":
             prompt += f"\nOutput {i}:"
         else:
-            prompt += f"\nOutput {i}: (please provide the output grid only)\n"
+            prompt += (
+                "Please provide a step-by-step explanation. Specifically, answer the following in your explanation. "
+                "1. Justify the output shape of your answer. \n"
+                "2. Did you consider shapes in the outputs and why?\n"
+                f"Provide the output for Input {i} again at the end of your answer."
+            )
 
         if include_completion:
             if rot90:
